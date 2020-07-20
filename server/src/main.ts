@@ -4,9 +4,18 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
-    const hostDomain = AppModule.isDev ? `${AppModule.host}:${AppModule.port}` : AppModule.host;
+  const app = await NestFactory.create(AppModule);
+  const hostDomain = AppModule.isDev ? `${AppModule.host}:${AppModule.port}` : AppModule.host;
 
+  const options = new DocumentBuilder()
+    .setTitle('Nest MEAN')
+    .setDescription('API Documentation')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('/api/docs', app, document);
+  /*
     const swaggerOptions = new DocumentBuilder()
         .setTitle('Nest MEAN')
         .setDescription('API Documentation')
@@ -28,11 +37,11 @@ async function bootstrap() {
             showRequestDuration: true,
         },
     });
+*/
+  // app.setGlobalPrefix('api');
+  app.useGlobalFilters(new HttpExceptionFilter());
 
-    app.setGlobalPrefix('api');
-    app.useGlobalFilters(new HttpExceptionFilter());
-
-    await app.listen(AppModule.port);
+  await app.listen(AppModule.port);
 }
 
 bootstrap();

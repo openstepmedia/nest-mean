@@ -1,22 +1,23 @@
-import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { BaseModelVm } from '../../../shared/base.model';
 import { UserRole } from '../user-role.enum';
 import { Expose } from 'class-transformer';
+import { AutoMap } from '@nartc/automapper';
 
 export class UserVm extends BaseModelVm {
-    @ApiModelProperty() 
-    @Expose()
+    @ApiProperty()
+    @AutoMap()
     username: string;
-    @ApiModelPropertyOptional() 
-    @Expose()
+    @ApiPropertyOptional()
+    @AutoMap()
     firstName?: string;
-    @ApiModelPropertyOptional() 
-    @Expose()
+    @ApiPropertyOptional()
+    @AutoMap()
     lastName?: string;
-    @ApiModelPropertyOptional() 
-    @Expose()
+    @ApiPropertyOptional()
+    @AutoMap()
     fullName?: string;
-    @ApiModelPropertyOptional({ enum: UserRole })
-    @Expose()
+    @ApiPropertyOptional({ enum: UserRole })
+    @AutoMap()
     role?: UserRole;
 }

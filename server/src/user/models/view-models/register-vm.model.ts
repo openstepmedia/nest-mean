@@ -1,10 +1,10 @@
-import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { LoginVm } from './login-vm.model';
 
 export class RegisterVm extends LoginVm {
-    @ApiModelPropertyOptional({ example: 'John' })
+    @ApiPropertyOptional({ example: 'John' })
     firstName?: string;
 
-    @ApiModelPropertyOptional({ example: 'Doe' })
+    @ApiPropertyOptional({ example: 'Doe' })
     lastName?: string;
 }

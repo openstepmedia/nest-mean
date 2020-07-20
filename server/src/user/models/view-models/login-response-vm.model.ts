@@ -1,9 +1,9 @@
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { UserVm } from './user-vm.model';
 
 export class LoginResponseVm {
-    @ApiModelProperty() token: string;
+    @ApiProperty() token: string;
 
-    @ApiModelProperty({ type: UserVm })
+    @ApiProperty({ type: UserVm })
     user: UserVm;
 }

@@ -16,10 +16,10 @@ import {
     ApiBadRequestResponse,
     ApiBearerAuth,
     ApiCreatedResponse,
-    ApiImplicitQuery,
+    ApiQuery,
     ApiOkResponse,
     ApiOperation,
-    ApiUseTags,
+    ApiTags,
 } from '@nestjs/swagger';
 import { isArray, map } from 'lodash';
 import { ApiException } from '../shared/api-exception.model';
@@ -36,15 +36,15 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../shared/guards/roles.guard';
 
 @Controller('todos')
-@ApiUseTags(Todo.modelName)
+@ApiTags(Todo.modelName)
 @ApiBearerAuth()
 export class TodoController {
     constructor(private readonly _todoService: TodoService) {
     }
 
     @Post()
-    // @Roles(UserRole.Admin)
-    // @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(UserRole.Admin)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiCreatedResponse({ type: TodoVm })
     @ApiBadRequestResponse({ type: ApiException })
     @ApiOperation(GetOperationId(Todo.modelName, 'Create'))
@@ -63,8 +63,8 @@ export class TodoController {
     @ApiOkResponse({ type: TodoVm, isArray: true })
     @ApiBadRequestResponse({ type: ApiException })
     @ApiOperation(GetOperationId(Todo.modelName, 'GetAll'))
-    @ApiImplicitQuery({ name: 'level', enum: EnumToArray(TodoLevel), required: false, isArray: true })
-    @ApiImplicitQuery({ name: 'isCompleted', required: false })
+    @ApiQuery({ name: 'level', enum: EnumToArray(TodoLevel), required: false, isArray: true })
+    @ApiQuery({ name: 'isCompleted', required: false })
     async get(
         @Query('level') level?: TodoLevel,
         @Query('isCompleted', new ToBooleanPipe())
@@ -86,6 +86,7 @@ export class TodoController {
 
         try {
             const todos = await this._todoService.findAll(filter);
+            console.log('todos:', todos);
             return this._todoService.mapArray(map(todos, todo => todo.toJSON()), Todo, TodoVm);
         } catch (e) {
             throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -93,8 +94,8 @@ export class TodoController {
     }
 
     @Put()
-    // @Roles(UserRole.Admin, UserRole.User)
-    // @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(UserRole.Admin, UserRole.User)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiOkResponse({ type: TodoVm })
     @ApiBadRequestResponse({ type: ApiException })
     @ApiOperation(GetOperationId(Todo.modelName, 'Update'))
@@ -128,8 +129,8 @@ export class TodoController {
     }
 
     @Delete(':id')
-    // @Roles(UserRole.Admin)
-    // @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(UserRole.Admin)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiOkResponse({ type: TodoVm })
     @ApiBadRequestResponse({ type: ApiException })
     @ApiOperation(GetOperationId(Todo.modelName, 'Delete'))

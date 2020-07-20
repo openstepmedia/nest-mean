@@ -33,6 +33,8 @@ export class AppModule {
         AppModule.port = AppModule.normalizePort(_configurationService.get(Configuration.PORT));
         AppModule.host = _configurationService.get(Configuration.HOST);
         AppModule.isDev = _configurationService.isDevelopment;
+
+        console.log("AppModule:", AppModule);
     }
 
     private static normalizePort(param: number | string): number | string {

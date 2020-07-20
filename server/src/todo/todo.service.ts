@@ -1,19 +1,19 @@
 import { HttpService, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ModelType } from 'typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
 import { BaseService } from '../shared/base.service';
 import { MapperService } from '../shared/mapper/mapper.service';
 import { Todo } from './models/todo.model';
 import { TodoParams } from './models/view-models/todo-params.model';
 
 @Injectable()
-export class TodoService extends BaseService<Todo> {
+export class TodoService extends BaseService<typeof Todo> {
     constructor(
         private readonly httpService: HttpService,
-        @InjectModel(Todo.modelName) private readonly _todoModel: ModelType<Todo>,
+        @InjectModel(Todo.modelName) private readonly _todoModel: ReturnModelType<typeof Todo>,
         private readonly _mapperService: MapperService,
     ) {
-        super();
+        super(Todo);
         this._model = _todoModel;
         this._mapper = _mapperService.mapper;
     }

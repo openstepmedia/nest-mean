@@ -1,5 +1,5 @@
 import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiUseTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiException } from '../shared/api-exception.model';
 import { GetOperationId } from '../shared/utilities/get-operation-id.helper';
 import { User } from './models/user.model';
@@ -10,7 +10,7 @@ import { UserVm } from './models/view-models/user-vm.model';
 import { UserService } from './user.service';
 
 @Controller('user')
-@ApiUseTags(User.modelName)
+@ApiTags(User.modelName)
 export class UserController {
     constructor(private readonly _userService: UserService) {}
 

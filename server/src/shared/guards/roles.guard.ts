@@ -1,6 +1,8 @@
 import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { InstanceType } from 'typegoose';
+// import { InstanceType } from 'typegoose';
+import { getModelForClass, prop, types, ReturnModelType, DocumentType } from '@typegoose/typegoose';
+
 import { UserRole } from '../../user/models/user-role.enum';
 import { User } from '../../user/models/user.model';
 
@@ -16,7 +18,7 @@ export class RolesGuard implements CanActivate {
         }
 
         const request = context.switchToHttp().getRequest();
-        const user: InstanceType<User> = request.user;
+        const user: DocumentType<User> = request.user;
 
         const hasRole = () => roles.indexOf(user.role) >= 0;
 

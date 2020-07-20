@@ -1,28 +1,37 @@
-import { InstanceType, ModelType, prop } from 'typegoose';
-import { BaseModel, schemaOptions } from '../../shared/base.model';
+// import { InstanceType, ModelType, prop } from 'typegoose';
+import { getModelForClass, prop, ReturnModelType, DocumentType } from '@typegoose/typegoose';
+import { BaseModel } from '../../shared/base.model';
 import { TodoLevel } from './todo-level.enum';
-import { Expose } from 'class-transformer';
+import { AutoMap } from '@nartc/automapper';
 
-export class Todo extends BaseModel<Todo> {
+export class Todo extends BaseModel {
     @prop({ required: [true, 'Content is required'] })
-    @Expose()
+    @AutoMap()
     content: string;
+
     @prop({ enum: TodoLevel, default: TodoLevel.Normal })
-    @Expose()
+    @AutoMap()
     level: TodoLevel;
+
     @prop({ default: false })
-    @Expose()
+    @AutoMap()
     isCompleted: boolean;
 
+/*
     static get model(): ModelType<Todo> {
         return new Todo().getModelForClass(Todo, { schemaOptions });
+    }
+*/
+    static get model(): ReturnModelType<typeof Todo> {
+        const m = getModelForClass(Todo);
+        return m;
     }
 
     static get modelName(): string {
         return this.model.modelName;
     }
 
-    static createModel(): InstanceType<Todo> {
+    static createModel(): DocumentType<Todo> {
         return new this.model();
     }
 }

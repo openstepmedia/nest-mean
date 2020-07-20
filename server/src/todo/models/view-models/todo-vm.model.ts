@@ -1,16 +1,19 @@
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { BaseModelVm } from '../../../shared/base.model';
 import { TodoLevel } from '../todo-level.enum';
 import { Expose } from 'class-transformer';
+import { AutoMap } from '@nartc/automapper';
 
 export class TodoVm extends BaseModelVm {
-    @ApiModelProperty() 
-    @Expose()
+    @ApiProperty()
+    @AutoMap()
     content: string;
-    @ApiModelProperty({ enum: TodoLevel })
-    @Expose()
+
+    @ApiProperty({ enum: TodoLevel })
+    @AutoMap()
     level: TodoLevel;
-    @ApiModelProperty() 
-    @Expose()
+
+    @ApiProperty()
+    @AutoMap()
     isCompleted: boolean;
 }

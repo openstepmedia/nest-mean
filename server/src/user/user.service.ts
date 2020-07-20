@@ -1,7 +1,9 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { compare, genSalt, hash } from 'bcryptjs';
-import { ModelType } from 'typegoose';
+// import { ModelType } from 'typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
+
 import { AuthService } from '../shared/auth/auth.service';
 import { JwtPayload } from '../shared/auth/jwt-payload.model';
 import { BaseService } from '../shared/base.service';
@@ -13,14 +15,14 @@ import { RegisterVm } from './models/view-models/register-vm.model';
 import { UserVm } from './models/view-models/user-vm.model';
 
 @Injectable()
-export class UserService extends BaseService<User> {
+export class UserService extends BaseService<typeof User> {
     constructor(
-        @InjectModel(User.modelName) private readonly _userModel: ModelType<User>,
+        @InjectModel(User.modelName) private readonly _userModel: ReturnModelType<typeof User>,
         private readonly _mapperService: MapperService,
         @Inject(forwardRef(() => AuthService))
         readonly _authService: AuthService,
     ) {
-        super();
+        super(User);
         this._model = _userModel;
         this._mapper = _mapperService.mapper;
     }
@@ -65,7 +67,7 @@ export class UserService extends BaseService<User> {
         };
 
         const token = await this._authService.signPayload(payload);
-        
+
         console.log(user);
 
         const userVm: UserVm = await this.map(user.toJSON(), User, UserVm);

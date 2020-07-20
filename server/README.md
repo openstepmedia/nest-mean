@@ -10,6 +10,14 @@ Nest MEAN Server
 $ npm install
 ```
 
+## Installation
+
+Configuration:
+
+```bash
+$ vim server/config/development.ts
+```
+
 ## Running the app
 
 ```bash

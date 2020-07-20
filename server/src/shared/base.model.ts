@@ -1,38 +1,51 @@
-import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { SchemaOptions } from 'mongoose';
-import { Typegoose, prop } from 'typegoose';
+import { prop, modelOptions } from '@typegoose/typegoose';
 import { Expose } from 'class-transformer';
+import { AutoMap } from '@nartc/automapper';
+
 
 export class BaseModelVm {
-    @ApiModelPropertyOptional({ type: String, format: 'date-time' })
-    @Expose()
+    @ApiPropertyOptional({ type: String, format: 'date-time' })
+    @AutoMap()
     createdAt?: Date;
 
-    @ApiModelPropertyOptional({ type: String, format: 'date-time' })
-    @Expose()
+    @ApiPropertyOptional({ type: String, format: 'date-time' })
+    @AutoMap()
     updatedAt?: Date;
 
-    @ApiModelPropertyOptional() 
-    @Expose()
+    @ApiPropertyOptional()
+    @AutoMap()
     id?: string;
 }
 
-export abstract class BaseModel<T> extends Typegoose {
+/**
+ * @see https://typegoose.github.io/typegoose/docs/api/decorators/model-options
+ */
+@modelOptions({ schemaOptions: {
+    timestamps: true,
+    toJSON: {
+        virtuals: true,
+        getters: true,
+    },
+} })
+export abstract class BaseModel {
     @prop()
-    @ApiModelPropertyOptional({ type: String, format: 'date-time' })
-    @Expose()
+    @ApiPropertyOptional({ type: String, format: 'date-time' })
+    @AutoMap()
     createdAt: Date;
 
     @prop()
-    @ApiModelPropertyOptional({ type: String, format: 'date-time' })
-    @Expose()
+    @ApiPropertyOptional({ type: String, format: 'date-time' })
+    @AutoMap()
     updatedAt: Date;
 
-    @ApiModelPropertyOptional()
-    @Expose()
+    @ApiPropertyOptional()
+    @AutoMap()
     id: string;
 }
 
+/*
 export const schemaOptions: SchemaOptions = {
     timestamps: true,
     toJSON: {
@@ -40,3 +53,4 @@ export const schemaOptions: SchemaOptions = {
         getters: true,
     },
 };
+*/
