@@ -5,7 +5,6 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { AuthService } from '../shared/auth/auth.service';
 import { JwtPayload } from '../shared/auth/jwt-payload.model';
 import { BaseService } from '../shared/base.service';
-import { MapperService } from '../shared/mapper/mapper.service';
 import { LoginResponseVm } from './models/view-models/login-response-vm.model';
 import { LoginVm } from './models/view-models/login-vm.model';
 import { RegisterVm } from './models/view-models/register-vm.model';
@@ -17,17 +16,15 @@ import { mapFrom } from '@nartc/automapper';
 export class UserService extends BaseService<typeof User> {
     constructor(
         @InjectModel(User.modelName) private readonly _userModel: ReturnModelType<typeof User>,
-        private readonly _mapperService: MapperService,
         @Inject(forwardRef(() => AuthService))
         readonly _authService: AuthService,
     ) {
         super(User);
         this._model = _userModel;
-        this._mapper = _mapperService.mapper;
-        this.initMapper();
+        this._initMapper();
     }
 
-    private initMapper() {
+    private _initMapper() {
         this._mapper.createMap(User, UserVm)
           .forMember(
             dest => dest.fullName,

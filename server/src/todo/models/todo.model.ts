@@ -17,11 +17,6 @@ export class Todo extends BaseModel {
     @AutoMap()
     isCompleted: boolean;
 
-/*
-    static get model(): ModelType<Todo> {
-        return new Todo().getModelForClass(Todo, { schemaOptions });
-    }
-*/
     static get model(): ReturnModelType<typeof Todo> {
         const m = getModelForClass(Todo);
         return m;

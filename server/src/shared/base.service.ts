@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { getModelForClass, types, ReturnModelType, DocumentType } from '@typegoose/typegoose';
-import { AutoMapper, Constructible } from '@nartc/automapper';
+import { AutoMapper, Mapper, Constructible } from '@nartc/automapper';
 
 /**
  * @see https://github.com/typegoose/typegoose/issues/303
@@ -8,7 +8,7 @@ import { AutoMapper, Constructible } from '@nartc/automapper';
  */
 export abstract class BaseService<U extends types.AnyParamConstructor<any>> {
     protected _model: ReturnModelType<U>;
-    protected _mapper: AutoMapper;
+    protected _mapper: AutoMapper = Mapper;
 
     constructor(cls: U) {
       this._model = getModelForClass(cls);
