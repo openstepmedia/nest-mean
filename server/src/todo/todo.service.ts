@@ -5,6 +5,7 @@ import { BaseService } from '../shared/base.service';
 import { MapperService } from '../shared/mapper/mapper.service';
 import { Todo } from './models/todo.model';
 import { TodoParams } from './models/view-models/todo-params.model';
+import { TodoVm } from './models/view-models/todo-vm.model';
 
 @Injectable()
 export class TodoService extends BaseService<typeof Todo> {
@@ -16,6 +17,11 @@ export class TodoService extends BaseService<typeof Todo> {
         super(Todo);
         this._model = _todoModel;
         this._mapper = _mapperService.mapper;
+        this.initMapper();
+    }
+
+    private initMapper() {
+        this._mapper.createMap(Todo, TodoVm)
     }
 
     async createTodo(params: TodoParams): Promise<Todo> {

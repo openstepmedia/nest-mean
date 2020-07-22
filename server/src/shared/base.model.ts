@@ -1,9 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { SchemaOptions } from 'mongoose';
 import { prop, modelOptions } from '@typegoose/typegoose';
-import { Expose } from 'class-transformer';
 import { AutoMap } from '@nartc/automapper';
-
 
 export class BaseModelVm {
     @ApiPropertyOptional({ type: String, format: 'date-time' })
@@ -44,13 +41,3 @@ export abstract class BaseModel {
     @AutoMap()
     id: string;
 }
-
-/*
-export const schemaOptions: SchemaOptions = {
-    timestamps: true,
-    toJSON: {
-        virtuals: true,
-        getters: true,
-    },
-};
-*/

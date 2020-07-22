@@ -1,7 +1,6 @@
 import { DocumentType, prop, getModelForClass, ReturnModelType } from '@typegoose/typegoose';
 import { BaseModel } from '../../shared/base.model';
 import { UserRole } from './user-role.enum';
-import { Expose } from 'class-transformer';
 import { AutoMap } from '@nartc/automapper';
 
 export class User extends BaseModel {

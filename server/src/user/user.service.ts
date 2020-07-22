@@ -1,18 +1,17 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { compare, genSalt, hash } from 'bcryptjs';
-// import { ModelType } from 'typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
-
 import { AuthService } from '../shared/auth/auth.service';
 import { JwtPayload } from '../shared/auth/jwt-payload.model';
 import { BaseService } from '../shared/base.service';
 import { MapperService } from '../shared/mapper/mapper.service';
-import { User } from './models/user.model';
 import { LoginResponseVm } from './models/view-models/login-response-vm.model';
 import { LoginVm } from './models/view-models/login-vm.model';
 import { RegisterVm } from './models/view-models/register-vm.model';
+import { User } from './models/user.model';
 import { UserVm } from './models/view-models/user-vm.model';
+import { mapFrom } from '@nartc/automapper';
 
 @Injectable()
 export class UserService extends BaseService<typeof User> {
@@ -25,6 +24,15 @@ export class UserService extends BaseService<typeof User> {
         super(User);
         this._model = _userModel;
         this._mapper = _mapperService.mapper;
+        this.initMapper();
+    }
+
+    private initMapper() {
+        this._mapper.createMap(User, UserVm)
+          .forMember(
+            dest => dest.fullName,
+            mapFrom(src => src.firstName + ' ' + src.lastName)
+          );
     }
 
     async register(vm: RegisterVm) {

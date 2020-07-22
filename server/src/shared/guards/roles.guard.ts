@@ -20,6 +20,8 @@ export class RolesGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const user: DocumentType<User> = request.user;
 
+        console.log('RolesGuard: user:', user);
+
         const hasRole = () => roles.indexOf(user.role) >= 0;
 
         if (user && user.role && hasRole()) {
