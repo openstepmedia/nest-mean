@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Module, Logger } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
 import { AuthService } from './auth/auth.service';
 import { JwtStrategy } from './auth/strategies/jwt-strategy.service';
@@ -10,6 +10,7 @@ import { ConfigurationService } from './configuration/configuration.service';
       ConfigurationService,
       AuthService,
       JwtStrategy,
+      Logger,
     ],
     exports: [
       ConfigurationService,

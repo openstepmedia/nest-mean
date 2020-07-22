@@ -22,3 +22,7 @@ npm-debug.log
 
 # config
 config/default.ts
+
+# log
+/log/*.log
+

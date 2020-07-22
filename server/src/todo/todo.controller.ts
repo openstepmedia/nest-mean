@@ -67,8 +67,7 @@ export class TodoController {
     @ApiQuery({ name: 'isCompleted', required: false })
     async get(
         @Query('level') level?: TodoLevel,
-        @Query('isCompleted', new ToBooleanPipe())
-            isCompleted?: boolean,
+        @Query('isCompleted', new ToBooleanPipe()) isCompleted?: boolean,
     ): Promise<TodoVm[]> {
         let filter = {};
 

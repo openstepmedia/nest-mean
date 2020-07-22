@@ -7,9 +7,16 @@ import { ConfigurationService } from './shared/configuration/configuration.servi
 import { SharedModule } from './shared/shared.module';
 import { TodoModule } from './todo/todo.module';
 import { UserModule } from './user/user.module';
+import * as winston from 'winston';
+import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 
 @Module({
-    imports: [SharedModule, MongooseModule.forRootAsync({
+    imports: [
+      SharedModule,
+      UserModule,
+      TodoModule,
+      // MongoDB connection
+      MongooseModule.forRootAsync({
         imports: [SharedModule],
         useFactory: async (_configService: ConfigurationService) => ({
             uri: _configService.get(Configuration.MONGO_URI),
@@ -20,7 +27,32 @@ import { UserModule } from './user/user.module';
             useCreateIndex: true,
         }),
         inject: [ConfigurationService],
-    }), UserModule, TodoModule],
+      }),
+
+      WinstonModule.forRootAsync({
+        imports: [SharedModule],
+        useFactory: async (_configService: ConfigurationService) => ({
+          transports: [
+            new winston.transports.Console({
+              format: winston.format.combine(
+                winston.format.timestamp(),
+                nestWinstonModuleUtilities.format.nestLike(),
+              ),
+            }),
+            new winston.transports.File({
+              filename: 'log/nest-mean.log',
+              format: winston.format.combine(
+                winston.format.timestamp(),
+                nestWinstonModuleUtilities.format.nestLike(),
+              ),
+            }),
+            // other transports...
+          ],
+        }),
+        inject: [ConfigurationService],
+      }),
+
+    ],
     controllers: [AppController],
     providers: [AppService],
 })
@@ -33,8 +65,6 @@ export class AppModule {
         AppModule.port = AppModule.normalizePort(_configurationService.get(Configuration.PORT));
         AppModule.host = _configurationService.get(Configuration.HOST);
         AppModule.isDev = _configurationService.isDevelopment;
-
-        console.log("AppModule:", AppModule);
     }
 
     private static normalizePort(param: number | string): number | string {

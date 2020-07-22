@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { getModelForClass, types, ReturnModelType, DocumentType } from '@typegoose/typegoose';
 import { AutoMapper, Mapper, Constructible } from '@nartc/automapper';
+import { Inject, Logger, LoggerService } from '@nestjs/common';
 
 /**
  * @see https://github.com/typegoose/typegoose/issues/303
@@ -9,9 +10,11 @@ import { AutoMapper, Mapper, Constructible } from '@nartc/automapper';
 export abstract class BaseService<U extends types.AnyParamConstructor<any>> {
     protected _model: ReturnModelType<U>;
     protected _mapper: AutoMapper = Mapper;
+    protected _logger: LoggerService = Logger;
 
     constructor(cls: U) {
       this._model = getModelForClass(cls);
+      this._logger.log('inside the BaseService .. look out!');
     }
 
     public async create(item: mongoose.CreateQuery<DocumentType<InstanceType<U>>>) {
