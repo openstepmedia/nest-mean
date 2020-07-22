@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import { getModelForClass, types, ReturnModelType, DocumentType } from '@typegoose/typegoose';
 import { AutoMapper, Mapper, Constructible } from '@nartc/automapper';
-import { Inject, Logger, LoggerService } from '@nestjs/common';
+import { Logger, LoggerService } from '@nestjs/common';
 
 /**
  * @see https://github.com/typegoose/typegoose/issues/303

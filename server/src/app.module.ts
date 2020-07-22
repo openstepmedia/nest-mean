@@ -29,6 +29,7 @@ import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-win
         inject: [ConfigurationService],
       }),
 
+      // Global Logger config
       WinstonModule.forRootAsync({
         imports: [SharedModule],
         useFactory: async (_configService: ConfigurationService) => ({
